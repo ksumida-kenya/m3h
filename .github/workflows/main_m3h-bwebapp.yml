@@ -1,11 +1,8 @@
-#Azure Web Apps のデプロイ アクションのドキュメント: https://github.com/Azure/webapps-deploy
-#その他の GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Net - M3H-Bwebapp
 
-オン:
-  プッシュ:
-    ブランチ:
+on:
+  push:
+    branches:
       - メイン
   workflow_dispatch:
 
@@ -13,12 +10,13 @@ name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Ne
   ビルド:
     runs-on: windows-latest
 
-    手順:
-      - 使用: actions/checkout@v4
+    steps:
+      - name: チェックアウト
+        uses: actions/checkout@v4
 
       - name: .NET Core を設定する
-        使用: actions/setup-dotnet@v1
-        と:
+        uses: actions/setup-dotnet@v1
+        with:
           dotnet-version: '8.x' # 英語
           include-prerelease: true # プレリリースを含める
         env:
@@ -27,24 +25,24 @@ name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Ne
       - name: dotnet を使用してビルドする
         run: dotnet build --configuration Release # 英語
 
-      - 名前: dotnet publish
+      - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: デプロイ ジョブのアーティファクトのアップロード
-        使用: actions/upload-artifact@v3
-        と:
-          名前: .net-app
-          パス: ${{env.DOTNET_ROOT}}/myapp
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   デプロイ:
     runs-on: windows-latest
-    ニーズ: ビルド
-    環境:
+    needs: ビルド
+    environment:
       名前: 'Production'
       URL: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    手順:
+    steps:
       - name: ビルドジョブからアーティファクトをダウンロードする
-        使用: actions/download-artifact@v3
-        と:
-          名前: .net
+        uses: actions/download-artifact@v3
+        with:
+          name: .net
