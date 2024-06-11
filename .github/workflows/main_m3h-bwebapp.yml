@@ -37,7 +37,7 @@ name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Ne
           パス: ${{env.DOTNET_ROOT}}/myapp
 
   デプロイ:
-    runs-on: windows-latest (実行時: windows-latest)
+    runs-on: windows-latest
     ニーズ: ビルド
     環境:
       名前: 'Production'
