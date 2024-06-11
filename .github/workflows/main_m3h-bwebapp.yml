@@ -1,57 +1,59 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
+#Azure Web Apps のデプロイ アクションのドキュメント: https://github.com/Azure/webapps-deploy
+#その他の GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy ASP.Net Core app to Azure Web App - M3H-Bwebapp
+name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Net - M3H-Bwebapp
 
-on:
-  push:
-    branches:
-      - main
+オン:
+  プッシュ:
+    ブランチ:
+      - メイン
   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: windows-latest
+ジョブ:
+  ビルド:
+    runs-on: windows-latest (実行時: windows-latest)
 
-    steps:
-      - uses: actions/checkout@v4
+    手順:
+      - 使用: actions/checkout@v4
 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '8.x'
-          include-prerelease: true
+      - name: .NET Core を設定する
+        使用: actions/setup-dotnet@v1
+        と:
+          dotnet-version: '8.x' (英語)
+          include-prerelease: true (プレリリースを含める): true
+        env:
+          NODE_VERSION: '20'
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: dotnet を使用してビルドする
+        run: dotnet build --configuration Release (英語)
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - 名前: dotnet publish
+        dotnet publish -c Release -o ${{env を実行します。DOTNET_ROOT}}/myapp
 
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
-        with:
-          name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+      - name: デプロイ ジョブのアーティファクトのアップロード
+        使用: actions/upload-artifact@v3
+        と:
+          名前: .net-app
+          パス: ${{env.DOTNET_ROOT}}/myapp
 
-  deploy:
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  デプロイ:
+    runs-on: windows-latest (実行時: windows-latest)
+    ニーズ: ビルド
+    環境:
+      名前: 'Production'
+      URL: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
-        with:
-          name: .net-app
+    手順:
+      - name: ビルドジョブからアーティファクトをダウンロードする
+        使用: actions/download-artifact@v3
+        と:
+          名前: .net-app
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'M3H-Bwebapp'
-          slot-name: 'Production'
+      - name: Azure Web アプリへのデプロイ
+        ID: deploy-to-webapp (英語)
+        使用: azure/webapps-deploy@v2
+        と:
+          アプリ名: 'M3H-Bwebapp'
+          slot-name: '生産'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1EFA515B84E94A22BF4F70A5DF22EFEA }}
-          package: .
+          パッケージ: .
