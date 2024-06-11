@@ -6,7 +6,7 @@ on:
       - メイン
   workflow_dispatch:
 
-ジョブ:
+jobs:
   ビルド:
     runs-on: windows-latest
 
@@ -33,6 +33,7 @@ on:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+
 
   デプロイ:
     runs-on: windows-latest
