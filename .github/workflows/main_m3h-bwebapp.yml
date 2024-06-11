@@ -1,50 +1,57 @@
-name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Net - M3H-Bwebapp
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - M3H-Bwebapp
 
 on:
   push:
     branches:
-      - メイン
+      - main
   workflow_dispatch:
 
 jobs:
-  ビルド:
+  build:
     runs-on: windows-latest
 
     steps:
-      - name: チェックアウト
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: .NET Core を設定する
+      - name: Set up .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.x' # 英語
-          include-prerelease: true # プレリリースを含める
-        env:
-          NODE_VERSION: '20'
+          dotnet-version: '8.x'
+          include-prerelease: true
 
-      - name: dotnet を使用してビルドする
-        run: dotnet build --configuration Release # 英語
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-      - name: デプロイ ジョブのアーティファクトのアップロード
+      - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-
-
-  デプロイ:
+  deploy:
     runs-on: windows-latest
-    needs: ビルド
+    needs: build
     environment:
-      名前: 'Production'
-      URL: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: ビルドジョブからアーティファクトをダウンロードする
+      - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: .net
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'M3H-Bwebapp'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CD02060F6B414C89B14DE2B68DBECFA8 }}
+          package: .
