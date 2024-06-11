@@ -11,7 +11,8 @@ name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Ne
 
 ジョブ:
   ビルド:
-    runs-on: windows-latest (実行時: windows-latest)
+      ビルド:
+    runs-on: windows-latest
 
     手順:
       - 使用: actions/checkout@v4
