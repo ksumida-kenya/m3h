@@ -19,16 +19,16 @@ name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Ne
       - name: .NET Core を設定する
         使用: actions/setup-dotnet@v1
         と:
-          dotnet-version: '8.x' (英語)
-          include-prerelease: true (プレリリースを含める): true
+          dotnet-version: '8.x' # 英語
+          include-prerelease: true # プレリリースを含める
         env:
           NODE_VERSION: '20'
 
       - name: dotnet を使用してビルドする
-        run: dotnet build --configuration Release (英語)
+        run: dotnet build --configuration Release # 英語
 
       - 名前: dotnet publish
-        dotnet publish -c Release -o ${{env を実行します。DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: デプロイ ジョブのアーティファクトのアップロード
         使用: actions/upload-artifact@v3
@@ -47,13 +47,4 @@ name: Core アプリをビルドして Azure Web アプリにデプロイ ASP.Ne
       - name: ビルドジョブからアーティファクトをダウンロードする
         使用: actions/download-artifact@v3
         と:
-          名前: .net-app
-
-      - name: Azure Web アプリへのデプロイ
-        ID: deploy-to-webapp (英語)
-        使用: azure/webapps-deploy@v2
-        と:
-          アプリ名: 'M3H-Bwebapp'
-          slot-name: '生産'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_1EFA515B84E94A22BF4F70A5DF22EFEA }}
-          パッケージ: .
+          名前: .net
