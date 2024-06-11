@@ -21,8 +21,6 @@ jobs:
         with:
           dotnet-version: '8.x'
           include-prerelease: true
-          env:
-          NODE_VERSION: '20'
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -57,3 +55,4 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CD02060F6B414C89B14DE2B68DBECFA8 }}
           package: .
+
