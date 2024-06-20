@@ -1,1 +1,1 @@
-![画像の説明]("C:\Users\xedgeuser\OneDrive\Documentos\Azure\blob用\test.png")
+![画像の説明](""C:\tst\test.png"")
